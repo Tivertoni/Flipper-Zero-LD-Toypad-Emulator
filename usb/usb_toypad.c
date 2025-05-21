@@ -13,8 +13,6 @@
 
 // Define all the possible commands
 #define CMD_WAKE   0xB0
-#define CMD_READ   0xD2
-#define CMD_MODEL  0xD4
 #define CMD_SEED   0xB1
 #define CMD_CHAL   0xB3
 #define CMD_COL    0xC0
@@ -26,7 +24,9 @@
 #define CMD_FLSAL  0xC7
 #define CMD_COLAL  0xC8
 #define CMD_TGLST  0xD0
+#define CMD_READ   0xD2
 #define CMD_WRITE  0xD3
+#define CMD_MODEL  0xD4
 #define CMD_PWD    0xE1
 #define CMD_ACTIVE 0xE5
 #define CMD_LEDSQ  0xFF
