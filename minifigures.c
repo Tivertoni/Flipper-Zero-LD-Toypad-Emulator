@@ -85,6 +85,8 @@ const Minifigure minifigures[MAX_MINIFIGS] = {
     {77, "Starfire"},
 };
 const int minifigures_count = sizeof(minifigures) / sizeof(Minifigure);
+const int min_character_id = minifigures[0][0];
+const int max_character_id = minifigures[sizeof(minifigures) - 1][0];
 
 const Vehicle vehicles[MAX_VEHICLES] = {
     {1000, "Police Car"},
@@ -329,10 +331,14 @@ const Vehicle vehicles[MAX_VEHICLES] = {
     {1265, "* Robot Retriever"}};
 
 const int vehicles_count = sizeof(vehicles) / sizeof(Vehicle);
-
-const char* get_minifigure_name(int id) {
-    for(int i = 0; i < MAX_MINIFIGS && minifigures[i].name != NULL; i++) {
-        if(minifigures[i].id == id) {
+const int min_vehicle_id = vehicles[0][0];
+const int max_vehicle_id = vehicles[sizeof(vehicles) - 1][0];
+const char *get_minifigure_name(int id)
+{
+    for (int i = 0; i < MAX_MINIFIGS && minifigures[i].name != NULL; i++)
+    {
+        if (minifigures[i].id == id)
+        {
             return minifigures[i].name;
         }
     }
@@ -348,9 +354,12 @@ const char* get_minifigure_name(int id) {
 //     return -1;
 // }
 
-const char* get_vehicle_name(int id) {
-    for(int i = 0; i < MAX_VEHICLES && vehicles[i].name != NULL; i++) {
-        if(vehicles[i].id == id) {
+const char *get_vehicle_name(int id)
+{
+    for (int i = 0; i < MAX_VEHICLES && vehicles[i].name != NULL; i++)
+    {
+        if (vehicles[i].id == id)
+        {
             return vehicles[i].name;
         }
     }
