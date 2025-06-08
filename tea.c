@@ -7,11 +7,13 @@
 #include "./usb/usb_toypad.h"
 
 // Encipher function: core TEA encryption logic
-void encipher(uint32_t* v, uint32_t* k, uint32_t* result) {
+void encipher(uint32_t *v, uint32_t *k, uint32_t *result)
+{
     uint32_t v0 = v[0], v1 = v[1];
     uint32_t sum = 0;
 
-    for(int i = 0; i < 32; i++) {
+    for (int i = 0; i < 32; i++)
+    {
         sum += DELTA;
         v0 += (((v1 << 4) + k[0]) ^ (v1 + sum) ^ ((v1 >> 5) + k[1]));
         v1 += (((v0 << 4) + k[2]) ^ (v0 + sum) ^ ((v0 >> 5) + k[3]));
@@ -22,11 +24,13 @@ void encipher(uint32_t* v, uint32_t* k, uint32_t* result) {
 }
 
 // Decipher function: core TEA decryption logic
-void decipher(uint32_t* v, uint32_t* k, uint32_t* result) {
+void decipher(uint32_t *v, uint32_t *k, uint32_t *result)
+{
     uint32_t v0 = v[0], v1 = v[1];
     uint32_t sum = 0xC6EF3720;
 
-    for(int i = 0; i < 32; i++) {
+    for (int i = 0; i < 32; i++)
+    {
         v1 -= (((v0 << 4) + k[2]) ^ (v0 + sum) ^ ((v0 >> 5) + k[3]));
         v0 -= (((v1 << 4) + k[0]) ^ (v1 + sum) ^ ((v1 >> 5) + k[1]));
         sum -= DELTA;
@@ -37,13 +41,15 @@ void decipher(uint32_t* v, uint32_t* k, uint32_t* result) {
 }
 
 // Load 32-bit value safely (portable)
-static uint32_t bytes_to_uint32(const uint8_t* buf) {
+static uint32_t bytes_to_uint32(const uint8_t *buf)
+{
     return (uint32_t)buf[0] | ((uint32_t)buf[1] << 8) | ((uint32_t)buf[2] << 16) |
            ((uint32_t)buf[3] << 24);
 }
 
 // Store 32-bit value safely (portable)
-static void uint32_to_bytes(uint32_t value, uint8_t* buf) {
+static void uint32_to_bytes(uint32_t value, uint8_t *buf)
+{
     buf[0] = (uint8_t)(value & 0xFF);
     buf[1] = (uint8_t)((value >> 8) & 0xFF);
     buf[2] = (uint8_t)((value >> 16) & 0xFF);
@@ -51,8 +57,10 @@ static void uint32_to_bytes(uint32_t value, uint8_t* buf) {
 }
 
 // Encryption function
-void tea_encrypt(const uint8_t* buffer, const uint8_t* key, uint8_t* out) {
-    if(!buffer || !key || !out) return;
+void tea_encrypt(const uint8_t *buffer, const uint8_t *key, uint8_t *out)
+{
+    if (!buffer || !key || !out)
+        return;
 
     uint32_t v[2] = {bytes_to_uint32(buffer), bytes_to_uint32(buffer + 4)};
     uint32_t k[4] = {
@@ -69,7 +77,8 @@ void tea_encrypt(const uint8_t* buffer, const uint8_t* key, uint8_t* out) {
 }
 
 // Decryption function
-void tea_decrypt(const uint8_t* buffer, const uint8_t* key, uint8_t* out) {
+void tea_decrypt(const uint8_t *buffer, const uint8_t *key, uint8_t *out)
+{
     furi_assert(key);
 
     uint32_t v[2] = {bytes_to_uint32(buffer), bytes_to_uint32(buffer + 4)};
@@ -83,7 +92,8 @@ void tea_decrypt(const uint8_t* buffer, const uint8_t* key, uint8_t* out) {
     uint32_t result[2];
     decipher(v, k, result);
 
-    if(!out || out == NULL) {
+    if (!out || out == NULL)
+    {
         set_debug_text("Error: output pointer is NULL");
         return;
     }
